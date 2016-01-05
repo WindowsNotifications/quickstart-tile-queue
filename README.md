@@ -1,2 +1,2 @@
-# quickstart-notification-queue
+# quickstart-tile-queue
 Quickstart: Using the tile notification queue
