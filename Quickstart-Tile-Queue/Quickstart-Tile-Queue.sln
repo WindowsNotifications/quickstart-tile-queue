@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quickstart-Tile-Queue", "Quickstart-Notification-Queue\Quickstart-Tile-Queue.csproj", "{FA28EE61-690B-4345-A0B8-387D992414B7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quickstart-Tile-Queue", "Quickstart-Tile-Queue\Quickstart-Tile-Queue.csproj", "{FA28EE61-690B-4345-A0B8-387D992414B7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

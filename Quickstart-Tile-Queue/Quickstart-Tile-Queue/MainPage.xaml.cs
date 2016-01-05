@@ -1,22 +1,10 @@
-﻿using NotificationsExtensions.Tiles;
+﻿using NotificationsExtensions.Tiles; // NuGet package "NotificationsExtensions.Win10"
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Data.Xml.Dom;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Notifications;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -43,6 +31,21 @@ namespace Quickstart_Tile_Queue
         }
 
         private void SendStockTileNotification(string symbol, double price, double percentChange, DateTime dateUpdated)
+        {
+            // Generate the notification content
+            XmlDocument content = GenerateNotificationContent(symbol, price, percentChange, dateUpdated);
+
+            // Create the tile notification
+            TileNotification notification = new TileNotification(content);
+
+            // Set the tag so that we can update (replace) this notification later
+            notification.Tag = symbol;
+
+            // Send the notification
+            TileUpdateManager.CreateTileUpdaterForApplication().Update(notification);
+        }
+
+        private XmlDocument GenerateNotificationContent(string symbol, double price, double percentChange, DateTime dateUpdated)
         {
             string percentString = (percentChange < 0 ? "▼" : "▲") + " " + percentChange + "%";
 
@@ -82,13 +85,7 @@ namespace Quickstart_Tile_Queue
                 }
             };
 
-            var notification = new TileNotification(content.GetXml())
-            {
-                // Specify the tag so we can replace this stock later
-                Tag = symbol
-            };
-
-            TileUpdateManager.CreateTileUpdaterForApplication().Update(notification);
+            return content.GetXml();
         }
 
         private void ButtonSendNotification_Click(object sender, RoutedEventArgs e)
