@@ -1,0 +1,8 @@
+﻿<Application
+    x:Class="Quickstart_Tile_Queue.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Quickstart_Tile_Queue"
+    RequestedTheme="Light">
+
+</Application>

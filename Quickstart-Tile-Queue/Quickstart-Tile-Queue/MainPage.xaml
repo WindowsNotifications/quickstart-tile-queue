@@ -1,0 +1,75 @@
+﻿<Page
+    x:Class="Quickstart_Tile_Queue.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Quickstart_Tile_Queue"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <ScrollViewer Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <StackPanel Margin="24">
+
+            <TextBlock
+                Text="Quickstart: Using the tile notification queue"
+                Style="{StaticResource TitleTextBlockStyle}"
+                TextWrapping="Wrap"/>
+
+            <RichTextBlock Margin="0,12,0,0">
+                <Paragraph>
+                    This app illustrates how to use the tile notification queue, which allows your live tile to flip through up to 5 different notifications.
+                </Paragraph>
+                <Paragraph />
+                <Paragraph>In this app, we'll enable the tile queue on the primary tile (which must be done via a local API call) and then send notifications for five different stocks.</Paragraph>
+                <Paragraph />
+                <Paragraph>Pin this app to Start and notice that it's cycling through five stock notifications.</Paragraph>
+                <Paragraph />
+                <Paragraph>After that, you can use the app to send more stock notifications, or update existing stock notifications.</Paragraph>
+            </RichTextBlock>
+            
+            <TextBox
+                x:Name="TextBoxSymbol"
+                Header="Symbol (and notification Tag)"
+                PlaceholderText="ex: MSFT"
+                Text="MSFT"
+                Margin="0,24,0,0"/>
+            
+            <TextBox
+                x:Name="TextBoxPrice"
+                Header="Price"
+                PlaceholderText="ex: 54.34"
+                Text="56.31"
+                InputScope="CurrencyAmount"
+                Margin="0,12,0,0"/>
+            
+            <TextBox
+                x:Name="TextBoxPercentChange"
+                Header="Percent Change"
+                PlaceholderText="ex: 3.25"
+                Text="1.45"
+                InputScope="Number"
+                Margin="0,12,0,0"/>
+            
+            <TimePicker
+                x:Name="TimePickerTimeUpdated"
+                Header="Time updated"
+                Margin="0,12,0,0"/>
+            
+            <Button
+                x:Name="ButtonSendNotification"
+                Content="Send tile notification"
+                Click="ButtonSendNotification_Click"
+                Margin="0,12,0,0"/>
+
+            <RichTextBlock Margin="0,12,0,0">
+                <Paragraph>The above button generates a new tile notification and sends it. If the symbol name (which is also the notification Tag) matches an existing one in the tile queue, then that notification is replaced. Otherwise, the oldest notification is pushed off the end of the queue.</Paragraph>
+            </RichTextBlock>
+            
+
+        </StackPanel>
+
+
+
+    </ScrollViewer>
+</Page>
