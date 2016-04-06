@@ -1,6 +1,7 @@
 ﻿using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.Foundation.Metadata;
 using Windows.UI.Notifications;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -13,6 +14,8 @@ namespace Quickstart_Tile_Queue
     /// </summary>
     sealed partial class App : Application
     {
+        public static TileActivatedInfo TileActivatedInfo;
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -32,6 +35,13 @@ namespace Quickstart_Tile_Queue
         {
             // Enable the tile queue on the primary tile (enables medium/wide/large tile queues)
             TileUpdateManager.CreateTileUpdaterForApplication().EnableNotificationQueue(true);
+
+            // If running on a system that supports chaseable tiles
+            if (ApiInformation.IsPropertyPresent("Windows.ApplicationModel.Activation.LaunchActivatedEventArgs", "TileActivatedInfo"))
+            {
+                // Cache the tile activated info, so that MainPage can access it
+                App.TileActivatedInfo = e.TileActivatedInfo;
+            }
 
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
@@ -67,6 +77,12 @@ namespace Quickstart_Tile_Queue
                 // parameter
                 rootFrame.Navigate(typeof(MainPage), e.Arguments);
             }
+
+            else
+            {
+                (rootFrame.Content as MainPage).UpdateTileActivatedInfo();
+            }
+
             // Ensure the current window is active
             Window.Current.Activate();
         }

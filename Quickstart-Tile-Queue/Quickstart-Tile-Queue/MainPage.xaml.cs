@@ -5,6 +5,8 @@ using Windows.UI.Notifications;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using System.Linq;
+using Windows.Foundation.Metadata;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -19,6 +21,8 @@ namespace Quickstart_Tile_Queue
         {
             this.InitializeComponent();
 
+            UpdateTileActivatedInfo();
+
             // Clear the current tile
             TileUpdateManager.CreateTileUpdaterForApplication().Clear();
 
@@ -28,6 +32,54 @@ namespace Quickstart_Tile_Queue
             SendStockTileNotification("AMZN", 636.99, -5.76, DateTime.Now.AddMinutes(-7));
             SendStockTileNotification("DOW", 17148.94, -1.58, DateTime.Now.AddMinutes(-5));
             SendStockTileNotification("NASDAQ", 4903.09, -2.08, DateTime.Now.AddMinutes(-3));
+        }
+
+        public void UpdateTileActivatedInfo()
+        {
+            if (ApiInformation.IsPropertyPresent("Windows.ApplicationModel.Activation.LaunchActivatedEventArgs", "TileActivatedInfo"))
+            {
+                // TileActivatedInfo is set upon app launch in App.xaml.cs.
+                if (App.TileActivatedInfo == null)
+                {
+                    TextBlockLaunchedFrom.Text = "Not launched from Live Tile.";
+                    TextBlockTileInfo.Visibility = Visibility.Collapsed;
+                }
+
+                else
+                {
+                    TextBlockLaunchedFrom.Text = "Launched from Live Tile.";
+
+                    if (App.TileActivatedInfo.RecentlyShownNotifications.Count == 0)
+                        TextBlockTileInfo.Text = "Live Tile was blank (no notifications).";
+
+                    else
+                    {
+                        // The first ShownTileNotification is the one that the user tapped
+                        TextBlockTileInfo.Text = "Tapped tile notification: " + App.TileActivatedInfo.RecentlyShownNotifications[0].Arguments;
+
+                        // Eliminate duplicates (like updated notifications for the same stock)
+                        string[] distinctArguments = App.TileActivatedInfo.RecentlyShownNotifications.Select(i => i.Arguments).Distinct().ToArray();
+
+                        if (distinctArguments.Length > 1)
+                        {
+                            TextBlockTileInfo.Text += "\nOther recently seen notifications...";
+
+                            foreach (var shownNotifArgs in distinctArguments.Skip(1))
+                            {
+                                TextBlockTileInfo.Text += "\n - " + shownNotifArgs;
+                            }
+                        }
+                    }
+
+                    TextBlockTileInfo.Visibility = Visibility.Visible;
+                }
+            }
+
+            else
+            {
+                TextBlockLaunchedFrom.Text = "Chaseable tiles not supported on this system";
+                TextBlockTileInfo.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void SendStockTileNotification(string symbol, double price, double percentChange, DateTime dateUpdated)
@@ -53,6 +105,9 @@ namespace Quickstart_Tile_Queue
             {
                 Visual = new TileVisual()
                 {
+                    // Include arguments so that we know which tile notification was clicked
+                    Arguments = symbol,
+
                     TileMedium = new TileBinding()
                     {
                         Content = new TileBindingContentAdaptive()

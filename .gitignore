@@ -194,3 +194,6 @@ FakesAssemblies/
 
 # Visual Studio 6 workspace options file
 *.opt
+Quickstart-Tile-Queue/Quickstart-Tile-Queue/BundleArtifacts/x86.txt
+Quickstart-Tile-Queue/Quickstart-Tile-Queue/project.lock.json
+Quickstart-Tile-Queue/Quickstart-Tile-Queue/project.lock.json
