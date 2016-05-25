@@ -36,12 +36,10 @@ namespace Quickstart_Tile_Queue
             // Enable the tile queue on the primary tile (enables medium/wide/large tile queues)
             TileUpdateManager.CreateTileUpdaterForApplication().EnableNotificationQueue(true);
 
-            // If running on a system that supports chaseable tiles
-            if (ApiInformation.IsPropertyPresent("Windows.ApplicationModel.Activation.LaunchActivatedEventArgs", "TileActivatedInfo"))
-            {
-                // Cache the tile activated info, so that MainPage can access it
-                App.TileActivatedInfo = e.TileActivatedInfo;
-            }
+            // Cache the tile activated info, so that MainPage can access it
+            // Note that on systems that don't support chaseable tiles (like older systems
+            // or Xbox/HoloLens), this will always simply be null. No need to check ApiInformation.
+            App.TileActivatedInfo = e.TileActivatedInfo;
 
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
@@ -80,6 +78,8 @@ namespace Quickstart_Tile_Queue
 
             else
             {
+                // Otherwise, since we're a single-page app, we know our content is MainPage
+                // and we can have the MainPage update its tile activated info
                 (rootFrame.Content as MainPage).UpdateTileActivatedInfo();
             }
 
