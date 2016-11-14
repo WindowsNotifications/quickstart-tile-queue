@@ -1,4 +1,4 @@
-﻿using NotificationsExtensions.Tiles; // NuGet package "NotificationsExtensions.Win10"
+﻿using Microsoft.Toolkit.Uwp.Notifications; // NuGet package "Microsoft.Toolkit.Uwp.Notifications"
 using System;
 using Windows.Data.Xml.Dom;
 using Windows.UI.Notifications;
@@ -59,25 +59,25 @@ namespace Quickstart_Tile_Queue
                         {
                             Children =
                             {
-                                new TileText()
+                                new AdaptiveText()
                                 {
                                     Text = symbol
                                 },
 
-                                new TileText()
+                                new AdaptiveText()
                                 {
                                     Text = price.ToString("N")
                                 },
 
-                                new TileText()
+                                new AdaptiveText()
                                 {
                                     Text = percentString
                                 },
 
-                                new TileText()
+                                new AdaptiveText()
                                 {
                                     Text = dateUpdated.ToString("t"),
-                                    Style = TileTextStyle.CaptionSubtle
+                                    HintStyle = AdaptiveTextStyle.CaptionSubtle
                                 }
                             }
                         }
